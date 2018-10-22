@@ -4,29 +4,36 @@ import { StaticQuery, graphql } from 'gatsby'
 import Layout from '../components/layout'
 import PostList from '../components/PostList'
 
-const IndexPage = () => (
+const BlogPage = () => (
   <StaticQuery
     query={graphql`
       {
-        pages: allWordpressPage(filter: { status: { eq: "publish" } }) {
-          edges {
-            node {
-              wordpress_id
-              title
-              fields {
-                path
-              }
-            }
-          }
-        }
         posts: allWordpressPost(
           filter: { status: { eq: "publish" }, format: { eq: "standard" } }
+          sort: { fields: date, order: DESC }
         ) {
           edges {
             node {
               wordpress_id
               title
               slug
+              date(formatString: "MMMM D, YYYY")
+              excerpt
+              author {
+                name
+              }
+              categories {
+                wordpress_id
+                name
+                fields {
+                  path
+                }
+              }
+              tags {
+                wordpress_id
+                name
+                slug
+              }
             }
           }
         }
@@ -34,11 +41,10 @@ const IndexPage = () => (
     `}
     render={data => (
       <Layout>
-        {data.pages && <PostList title="All Pages" posts={data.pages.edges} />}
         {data.posts && <PostList title="All Posts" posts={data.posts.edges} />}
       </Layout>
     )}
   />
 )
 
-export default IndexPage
+export default BlogPage
