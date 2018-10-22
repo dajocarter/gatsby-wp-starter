@@ -21,6 +21,7 @@ const BlogPage = () => (
               excerpt
               author {
                 name
+                slug
               }
               categories {
                 wordpress_id

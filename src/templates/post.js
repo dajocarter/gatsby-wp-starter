@@ -35,6 +35,7 @@ export const query = graphql`
       content
       author {
         name
+        slug
       }
       categories {
         wordpress_id
