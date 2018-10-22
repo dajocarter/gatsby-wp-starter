@@ -1,9 +1,46 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   siteMetadata: {
     title: 'Gatsby Default Starter',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
+    {
+      resolve: 'gatsby-source-wordpress',
+      options: {
+        baseUrl: `${process.env.WP_BASE_URL}`,
+        protocol: `${process.env.WP_PROTOCOL}`,
+        hostingWPCOM: false,
+        useACF: false,
+        acfOptionPageIds: [],
+        verboseOutput: true,
+        perPage: 100,
+        searchAndReplaceContentUrls: {
+          sourceUrl: `${process.env.WP_PROTOCOL}://${process.env.WP_BASE_URL}`,
+          replacementUrl: `${process.env.WP_PROTOCOL}://${
+            process.env.WP_BASE_URL
+          }`,
+        },
+        concurrentRequests: 10,
+        includedRoutes: [
+          '/*/*/categories',
+          '/*/*/comments',
+          '/*/*/posts',
+          '/*/*/pages',
+          '/*/*/media',
+          '/*/*/tags',
+          '/*/*/taxonomies',
+          '/*/*/users',
+        ],
+        excludedRoutes: [],
+        normalizer: function({ entities }) {
+          return entities
+        },
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
