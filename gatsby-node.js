@@ -67,6 +67,7 @@ exports.createPages = ({ graphql, actions }) => {
     const postTemplate = path.resolve('./src/templates/post.js')
     const categoryTemplate = path.resolve('./src/templates/category.js')
     const tagTemplate = path.resolve('./src/templates/tag.js')
+    const authorTemplate = path.resolve('./src/templates/author.js')
     // Query for all wordpress pages and posts then create pages for them
     resolve(
       graphql(`
@@ -102,6 +103,14 @@ exports.createPages = ({ graphql, actions }) => {
             }
           }
           tags: allWordpressTag {
+            edges {
+              node {
+                id
+                slug
+              }
+            }
+          }
+          users: allWordpressWpUsers {
             edges {
               node {
                 id
@@ -150,6 +159,16 @@ exports.createPages = ({ graphql, actions }) => {
           createPage({
             path: `/tag/${node.slug}/`,
             component: tagTemplate,
+            context: {
+              id: node.id,
+            },
+          })
+        })
+
+        result.data.users.edges.forEach(({ node }) => {
+          createPage({
+            path: `/author/${node.slug}/`,
+            component: authorTemplate,
             context: {
               id: node.id,
             },
