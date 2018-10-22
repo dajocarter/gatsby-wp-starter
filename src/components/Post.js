@@ -38,7 +38,12 @@ const Post = ({ post }) => {
             {post.author && (
               <ByLine>
                 {' '}
-                by <Author>{post.author.name}</Author>
+                by{' '}
+                <Author>
+                  <Link to={`/author/${post.author.slug}`}>
+                    {post.author.name}
+                  </Link>
+                </Author>
               </ByLine>
             )}
           </EntryMeta>
