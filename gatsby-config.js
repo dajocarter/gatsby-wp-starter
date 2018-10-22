@@ -10,6 +10,12 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-styled-components',
     {
+      resolve: 'gatsby-plugin-typography',
+      options: {
+        pathToConfigModule: 'src/utils/typography',
+      },
+    },
+    {
       resolve: 'gatsby-source-wordpress',
       options: {
         baseUrl: `${process.env.WP_BASE_URL}`,
