@@ -1,12 +1,22 @@
 import React from 'react'
 import { graphql } from 'gatsby'
+import styled from 'styled-components'
 
 import Layout from '../components/layout'
+import EntryContent from '../components/styled/EntryContent'
+
+const Article = styled.article``
+const EntryHeader = styled.header``
+const EntryTitle = styled.h1``
 
 const PageTemplate = ({ data }) => (
   <Layout>
-    <h1>{data.page.title}</h1>
-    <div dangerouslySetInnerHTML={{ __html: data.page.content }} />
+    <Article>
+      <EntryHeader>
+        <EntryTitle>{data.page.title}</EntryTitle>
+      </EntryHeader>
+    </Article>
+    <EntryContent dangerouslySetInnerHTML={{ __html: data.page.content }} />
   </Layout>
 )
 
