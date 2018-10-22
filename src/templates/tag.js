@@ -6,7 +6,7 @@ import PostList from '../components/PostList'
 
 const TagTemplate = ({ data }) => (
   <Layout>
-    <h1>{data.tag.name}</h1>
+    <h1>Tag: {data.tag.name}</h1>
     <p>There are {data.tag.count} posts with this tag.</p>
     <p>{data.tag.description}</p>
     {data.posts && <PostList posts={data.posts.edges} />}
@@ -25,10 +25,27 @@ export const query = graphql`
     ) {
       edges {
         node {
-          id
+          wordpress_id
           title
           slug
+          date(formatString: "MMMM D, YYYY")
           excerpt
+          author {
+            name
+            slug
+          }
+          categories {
+            wordpress_id
+            name
+            fields {
+              path
+            }
+          }
+          tags {
+            wordpress_id
+            name
+            slug
+          }
         }
       }
     }
