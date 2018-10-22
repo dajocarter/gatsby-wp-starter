@@ -91,7 +91,7 @@ exports.createPages = ({ graphql, actions }) => {
               }
             }
           }
-          categories: allWordpressCategory(filter: { count: { gt: 0 } }) {
+          categories: allWordpressCategory {
             edges {
               node {
                 id
@@ -101,7 +101,7 @@ exports.createPages = ({ graphql, actions }) => {
               }
             }
           }
-          tags: allWordpressTag(filter: { count: { gt: 0 } }) {
+          tags: allWordpressTag {
             edges {
               node {
                 id
