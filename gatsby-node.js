@@ -16,6 +16,9 @@ exports.sourceNodes = ({ getNodes, actions }) => {
   const categoryNodes = allNodes.filter(
     node => node.internal.type === 'wordpress__CATEGORY'
   )
+  const tagNodes = allNodes.filter(
+    node => node.internal.type === 'wordpress__TAG'
+  )
 
   // Build each node's path
   pageNodes.forEach(node => {
@@ -52,6 +55,12 @@ exports.sourceNodes = ({ getNodes, actions }) => {
     path = `/category/${path}`
     // Add full path to node -- available at node.fields.path
     createNodeField({ node: original, name: `path`, value: path })
+  })
+
+  // We always have to prepend tag slug with /tag/ so might as well
+  // make a custom path field for easier use
+  tagNodes.forEach(node => {
+    createNodeField({ node, name: `path`, value: `/tag/${node.slug}/` })
   })
 }
 

@@ -49,7 +49,9 @@ export const BlogListQuery = graphql`
           tags {
             wordpress_id
             name
-            slug
+            fields {
+              path
+            }
           }
         }
       }

@@ -74,7 +74,7 @@ const Post = ({ post }) => {
               {post.tags.map((tag, i) => (
                 <React.Fragment key={tag.wordpress_id}>
                   {!!i && ', '}
-                  <Link to={`/tag/${tag.slug}/`}>{tag.name}</Link>
+                  <Link to={tag.fields.path}>{tag.name}</Link>
                 </React.Fragment>
               ))}
             </TagLinks>

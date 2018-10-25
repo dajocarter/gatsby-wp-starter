@@ -32,7 +32,9 @@ export const TagListQuery = graphql`
         node {
           wordpress_id
           name
-          slug
+          fields {
+            path
+          }
         }
       }
     }

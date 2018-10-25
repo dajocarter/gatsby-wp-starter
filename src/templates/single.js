@@ -47,7 +47,9 @@ export const query = graphql`
       tags {
         wordpress_id
         name
-        slug
+        fields {
+          path
+        }
       }
     }
   }
