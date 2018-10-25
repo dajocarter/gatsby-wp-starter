@@ -8,8 +8,14 @@ import Pagination from '../components/Pagination'
 const BlogPage = ({ pageContext, data }) => {
   return (
     <Layout>
-      {data.posts && <PostList title="All Posts" posts={data.posts.edges} />}
-      <Pagination pageContext={pageContext} pathPrefix="blog" />
+      {data.posts ? (
+        <>
+          <PostList title="All Posts" posts={data.posts.edges} />
+          <Pagination pageContext={pageContext} />
+        </>
+      ) : (
+        <h2>No posts have been published</h2>
+      )}
     </Layout>
   )
 }

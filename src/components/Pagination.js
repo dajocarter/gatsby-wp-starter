@@ -17,8 +17,8 @@ const NavLinks = styled.ul`
 
 const NavItem = styled.li``
 
-const Paginate = ({ pageContext, pathPrefix }) => {
-  const { currentPage, numPages } = pageContext
+const Paginate = ({ pageContext }) => {
+  const { currentPage, numPages, pathPrefix } = pageContext
   const isFirstPage = currentPage === 1
   const isLastPage = currentPage === numPages
   const prevPage =

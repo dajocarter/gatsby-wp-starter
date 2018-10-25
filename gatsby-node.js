@@ -64,10 +64,14 @@ exports.createPages = ({ graphql, actions }) => {
   return new Promise((resolve, reject) => {
     // Gather templates
     const pageTemplate = path.resolve('./src/templates/page.js')
-    const postTemplate = path.resolve('./src/templates/post.js')
-    const blogTemplate = path.resolve('./src/templates/blog.js')
-    const categoryTemplate = path.resolve('./src/templates/category.js')
-    const tagTemplate = path.resolve('./src/templates/tag.js')
+    const singlePostTemplate = path.resolve('./src/templates/single.js')
+    const archivePostTemplate = path.resolve('./src/templates/archive.js')
+    const singleCategoryTemplate = path.resolve('./src/templates/category.js')
+    const archiveCategoryTemplate = path.resolve(
+      './src/templates/archive-category.js'
+    )
+    const singleTagTemplate = path.resolve('./src/templates/tag.js')
+    const archiveTagTemplate = path.resolve('./src/templates/archive-tag.js')
     const authorTemplate = path.resolve('./src/templates/author.js')
     // Query for all wordpress pages and posts then create pages for them
     resolve(
@@ -137,48 +141,83 @@ exports.createPages = ({ graphql, actions }) => {
         })
 
         const posts = result.data.posts.edges
-        const postsPerPage = 2
-        const numPages = Math.ceil(posts.length / postsPerPage)
+        const postsPerPage = 10
+        const numPosts = Math.ceil(posts.length / postsPerPage)
         // Create single posts
         posts.forEach(({ node }) => {
           createPage({
             path: `/${node.slug}/`,
-            component: postTemplate,
+            component: singlePostTemplate,
             context: {
               id: node.id,
             },
           })
         })
         // Create a paginated blog, e.g., /blog/, /blog/2
-        Array.from({ length: numPages }).forEach((_, i) => {
+        Array.from({ length: numPosts }).forEach((_, i) => {
           createPage({
             path: i === 0 ? `/blog/` : `/blog/${i + 1}/`,
-            component: blogTemplate,
+            component: archivePostTemplate,
             context: {
               limit: postsPerPage,
               skip: i * postsPerPage,
-              numPages,
+              numPages: numPosts,
               currentPage: i + 1,
+              pathPrefix: `blog`,
             },
           })
         })
 
-        result.data.categories.edges.forEach(({ node }) => {
+        const categories = result.data.categories.edges
+        const numCats = Math.ceil(categories.length / postsPerPage)
+        // Create single category pages
+        categories.forEach(({ node }) => {
           createPage({
             path: node.fields.path,
-            component: categoryTemplate,
+            component: singleCategoryTemplate,
             context: {
               id: node.id,
             },
           })
         })
+        // Create a paginated category listing, e.g., /categories/, /categories/2
+        Array.from({ length: numCats }).forEach((_, i) => {
+          createPage({
+            path: i === 0 ? `/categories/` : `/categories/${i + 1}/`,
+            component: archiveCategoryTemplate,
+            context: {
+              limit: postsPerPage,
+              skip: i * postsPerPage,
+              numPages: numCats,
+              currentPage: i + 1,
+              pathPrefix: `categories`,
+            },
+          })
+        })
 
-        result.data.tags.edges.forEach(({ node }) => {
+        const tags = result.data.tags.edges
+        const numTags = Math.ceil(tags.length / postsPerPage)
+        // Create single tag pages
+        tags.forEach(({ node }) => {
           createPage({
             path: `/tag/${node.slug}/`,
-            component: tagTemplate,
+            component: singleTagTemplate,
             context: {
               id: node.id,
+            },
+          })
+        })
+        // Create a paginated tag listing, e.g., /tags/, /tags/2
+        Array.from({ length: numTags }).forEach((_, i) => {
+          createPage({
+            path: i === 0 ? `/tags/` : `/tags/${i + 1}/`,
+            component: archiveTagTemplate,
+            context: {
+              limit: postsPerPage,
+              skip: i * postsPerPage,
+              numPages: numCats,
+              currentPage: i + 1,
+              pathPrefix: `tags`,
             },
           })
         })
