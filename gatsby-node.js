@@ -65,6 +65,7 @@ exports.createPages = ({ graphql, actions }) => {
     // Gather templates
     const pageTemplate = path.resolve('./src/templates/page.js')
     const postTemplate = path.resolve('./src/templates/post.js')
+    const blogTemplate = path.resolve('./src/templates/blog.js')
     const categoryTemplate = path.resolve('./src/templates/category.js')
     const tagTemplate = path.resolve('./src/templates/tag.js')
     const authorTemplate = path.resolve('./src/templates/author.js')
@@ -135,12 +136,29 @@ exports.createPages = ({ graphql, actions }) => {
           })
         })
 
-        result.data.posts.edges.forEach(({ node }) => {
+        const posts = result.data.posts.edges
+        const postsPerPage = 2
+        const numPages = Math.ceil(posts.length / postsPerPage)
+        // Create single posts
+        posts.forEach(({ node }) => {
           createPage({
             path: `/${node.slug}/`,
             component: postTemplate,
             context: {
               id: node.id,
+            },
+          })
+        })
+        // Create a paginated blog, e.g., /blog/, /blog/2
+        Array.from({ length: numPages }).forEach((_, i) => {
+          createPage({
+            path: i === 0 ? `/blog/` : `/blog/${i + 1}/`,
+            component: blogTemplate,
+            context: {
+              limit: postsPerPage,
+              skip: i * postsPerPage,
+              numPages,
+              currentPage: i + 1,
             },
           })
         })
