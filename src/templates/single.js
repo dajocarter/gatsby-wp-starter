@@ -32,6 +32,16 @@ export const query = graphql`
       title
       slug
       date(formatString: "MMMM D, YYYY")
+      featured_media {
+        alt_text
+        localFile {
+          childImageSharp {
+            fluid {
+              ...GatsbyImageSharpFluid_withWebp_tracedSVG
+            }
+          }
+        }
+      }
       content
       author {
         name

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import Img from 'gatsby-image'
 import styled from 'styled-components'
 
 import EntryContent from './styled/EntryContent'
@@ -11,6 +12,7 @@ const EntryMeta = styled.div``
 const PostedOn = styled.span``
 const ByLine = styled.span``
 const Author = styled.span``
+const PostThumbnail = styled.div``
 const EntryFooter = styled.footer``
 const CatLinks = styled.span``
 const TagLinks = styled.span``
@@ -49,6 +51,14 @@ const Post = ({ post }) => {
           </EntryMeta>
         )}
       </EntryHeader>
+      {post.featured_media && (
+        <PostThumbnail>
+          <Img
+            fluid={post.featured_media.localFile.childImageSharp.fluid}
+            alt={post.featured_media.alt_text}
+          />
+        </PostThumbnail>
+      )}
       {post.excerpt && (
         <EntryContent dangerouslySetInnerHTML={{ __html: post.excerpt }} />
       )}
